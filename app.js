@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 const connectDB = require('./db/connect');
 const mongoDB = process.env.MONGO_URI;
 const passport = require('passport');
-const mainController = require('./server/routes/index')
+const mainController = require('./server/routes/index');
 // Template engine
 app.set('layout', './layouts/main');
 app.set('view engine', 'ejs');
@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(ejsLayouts);
 
 // Routes
-app.use('/', mainController)
+app.use('/', mainController);
 
 app.all('*', (req, res) => {
   res.status(404).send('<h1>Resource not found</h1>');
