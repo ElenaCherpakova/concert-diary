@@ -1,23 +1,102 @@
+// Load environment variables from .env file
 require('dotenv').config();
+
+// Import dependencies
 const express = require('express');
+require("express-async-errors");
 const app = express();
 const path = require('path');
 const ejsLayouts = require('express-ejs-layouts');
-
-const port = process.env.PORT || 3000;
-const connectDB = require('./db/connect');
-const mongoDB = process.env.MONGO_URI;
+const session = require('express-session');
+const flash = require("connect-flash");
+const rateLimiter = require('express-rate-limit'); //SECURITY
+const helmet = require('helmet'); //SECURITY
+const xss = require('xss-clean'); //SECURITY
+const MongoDBStore = require('connect-mongodb-session')(session);
 const passport = require('passport');
+
+// Import local modules
+const connectDB = require('./db/connect');
+const passport_init = require('./passport/passport_init');
 const mainController = require('./server/routes/index');
+const { authMiddleware, setCurrentUser, csrf } = require("./middleware/auth");
+
+// Set the port
+const port = process.env.PORT || 3000;
+
 // Template engine
 app.set('layout', './layouts/main');
 app.set('view engine', 'ejs');
 
-app.use(express.urlencoded({ extended: true }));
+// Set up the MongoDB session store
+const url = process.env.MONGO_URI;
+const store = new MongoDBStore({
+  uri: url,
+  collection: 'mySessions',
+});
+store.on('error', (error) => console.log(error));
+
+// Configure session parameters
+const session_params = {
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  store: store,
+  cookie: {
+    secure: false,
+    sameSite: 'strict',
+  },
+};
+
+// Configure secure session settings for production environment
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1);
+  session_params.cookie.secure = true;
+}
+
+// Set Middleware and app settings
+
+app.use(session(session_params));
+passport_init();
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(ejsLayouts);
 
+// Apply security middleware
+app.use(
+  rateLimiter({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+  })
+);
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
+          "'unsafe-inline'",
+        ],
+        objectSrc: ["'none'"],
+        styleSrc: [
+          "'self'",
+          'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+          "'unsafe-inline'",
+        ],
+        upgradeInsecureRequests: null,
+      },
+    },
+  })
+);
+app.use(xss());
+app.use(csrf);
+app.use(setCurrentUser);
 // Routes
 app.use('/', mainController);
 
@@ -27,7 +106,7 @@ app.all('*', (req, res) => {
 
 const start = async () => {
   try {
-    await connectDB(mongoDB);
+    await connectDB(url);
     app.listen(port, console.log(`Server is listening on port ${port}...`));
   } catch (error) {
     console.log(error);
