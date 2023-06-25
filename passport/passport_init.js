@@ -6,7 +6,7 @@ const passport_init = () => {
   passport.use(
     new LocalStrategy(async function (email, password, done) {
       try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: email });
         if (!user) {
           return done(null, false, { message: 'Incorrect credentials' });
         }

@@ -3,12 +3,12 @@ require('dotenv').config();
 
 // Import dependencies
 const express = require('express');
-require("express-async-errors");
+require('express-async-errors');
 const app = express();
 const path = require('path');
-const ejsLayouts = require('express-ejs-layouts');
+// const ejsLayouts = require('express-ejs-layouts');
 const session = require('express-session');
-const flash = require("connect-flash");
+const flash = require('connect-flash');
 const rateLimiter = require('express-rate-limit'); //SECURITY
 const helmet = require('helmet'); //SECURITY
 const xss = require('xss-clean'); //SECURITY
@@ -18,15 +18,21 @@ const passport = require('passport');
 // Import local modules
 const connectDB = require('./db/connect');
 const passport_init = require('./passport/passport_init');
-const mainController = require('./server/routes/index');
-const { authMiddleware, setCurrentUser, csrf } = require("./middleware/auth");
+const pageRouter = require('./routes/page_routes');
+const concertRouter = require('./routes/concert_routes');
+// const aboutRouter = require('./routes/about_routes');
+const errorHandlerMiddleware = require('./middleware/error-handler');
+const notFoundMiddleware = require('./middleware/not-found');
+
+const { authMiddleware, setCurrentUser, csrf } = require('./middleware/auth');
 
 // Set the port
 const port = process.env.PORT || 3000;
 
 // Template engine
-app.set('layout', './layouts/main');
+// app.set('view', 'views');
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Set up the MongoDB session store
 const url = process.env.MONGO_URI;
@@ -61,9 +67,10 @@ passport_init();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+app.use(flash());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(ejsLayouts);
+// app.use(ejsLayouts);
 
 // Apply security middleware
 app.use(
@@ -77,7 +84,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        imgSrc: ["'self'"],
+        imgSrc: ["'self'", "data:"],
         scriptSrc: [
           "'self'",
           'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
@@ -88,6 +95,7 @@ app.use(
           "'self'",
           'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
           "'unsafe-inline'",
+          'https://fonts.googleapis.com',
         ],
         upgradeInsecureRequests: null,
       },
@@ -98,11 +106,12 @@ app.use(xss());
 app.use(csrf);
 app.use(setCurrentUser);
 // Routes
-app.use('/', mainController);
+app.use('/', pageRouter);
+// app.use('/about', aboutRouter);
+app.use('/concerts', authMiddleware, concertRouter);
 
-app.all('*', (req, res) => {
-  res.status(404).send('<h1>Resource not found</h1>');
-});
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 const start = async () => {
   try {

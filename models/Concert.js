@@ -13,15 +13,15 @@ const ConcertSchema = new Schema(
       required: [true, 'Please provide an artist'],
       maxlength: 100,
     },
-    body: {
+    review: {
       type: String,
-      required: [true, 'Please provide a body'],
-      maxlength: 1000,
+      required: [true, 'Please provide a review'],
+      maxlength: 500,
     },
     rate: {
       type: String,
-      enum: ['amazing', 'very good', 'good', 'mediocre', 'bad'],
-      default: 'good',
+      enum: ['amazing', 'good', 'mediocre', 'bad'],
+      default: 'amazing',
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

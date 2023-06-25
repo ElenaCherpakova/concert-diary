@@ -3,17 +3,17 @@ const homePage = async (req, res) => {
     title: 'Concert Diary',
     description: 'A diary of concerts',
   };
-    res.render('index', { locals });
+  res.render('pages/index', { locals });
 };
 const aboutPage = async (req, res) => {
-    const locals = {
-      title: 'About App',
-      description: 'about application',
-    };
-      res.render('about', { locals });
-  };
+  const locals = {
+    title: 'About Concert Diary',
+    description: 'A diary of concerts',
+  }
+  res.render('pages/about', { locals });
+};
 
 module.exports = {
   homePage,
-  aboutPage
+  aboutPage,
 };

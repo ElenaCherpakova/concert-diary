@@ -1,0 +1,91 @@
+<%- include('../partials/head', { errors, info }) %> <%-
+include('../partials/navbar') %>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-end m-4">
+    <% if (currentPage > 1) { %>
+    <li class="page-item">
+      <a class="page-link" href="/concerts?page=<%= currentPage - 1 %>"
+        >Previous</a
+      >
+    </li>
+    <% } %> <% for (let i = 1; i <= totalPages; i++) { %> <% if (i ===
+    currentPage) { %>
+    <li class="page-item active">
+      <a class="page-link" href="/concerts?page=<%= i %>"><%= i %></a>
+    </li>
+    <% } else { %>
+    <li class="page-item">
+      <a class="page-link" href="/concerts?page=<%= i %>"><%= i %></a>
+    </li>
+    <% } %> <% } %> <% if (currentPage < totalPages) { %>
+    <li class="page-item">
+      <a class="page-link" href="/concerts?page=<%= currentPage + 1 %>">Next</a>
+    </li>
+    <% } %>
+  </ul>
+</nav>
+
+<% if (concerts.length === 0) { %>
+<h2 style="text-align: center">There are no concerts to display.</h2>
+<% } else { %>
+<div class="row m-2" id="concerts-table">
+  <% concerts.forEach((concert) => { %>
+  <div class="col-md-4 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Title: <%= concert.title %></h5>
+        <h6 class="card-subtitle">Artist: <%= concert.artist %></h6>
+        <p class="card-text"><%= concert.review %></p>
+        <h6 class="card-subtitle">Rate: <%= concert.rate %></h6>
+        <div class="d-flex justify-content-between mt-3">
+          <span>
+            <a
+              class="btn btn-outline-dark"
+              href="/concerts/edit/<%= concert._id %>"
+              >Edit</a
+            >
+            <button
+              type="button"
+              class="deleteButton btn btn-dark"
+              data-id="<%= concert._id %>">
+              Delete
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('concerts-table');
+    table.addEventListener('click', async (event) => {
+      if (event.target.classList.contains('deleteButton')) {
+        const concert_id = event.target.dataset.id;
+        event.preventDefault();
+        try {
+          response = await fetch(`/concerts/delete/${concert_id}`, {
+            method: 'DELETE',
+          });
+          window.location = response.url;
+        } catch (error) {
+          const body = document.getElementById('body');
+          const alert_html =
+            '<div class="alert alert-danger" role="alert">A communications error occurred.</div>';
+          const temp_div = document.createElement('div');
+          temp_div.innerHTML = alert_html;
+          const alerts = document.getElementsByClassName('alert');
+          Array.prototype.forEach.call(alerts, (alert) => {
+            body.removeChild(alert);
+          });
+          const new_alert = document.createElement('div');
+          new_alert.innerHTML = alert_html;
+          body.prepend(temp_div.firstChild);
+        }
+      }
+    });
+  });
+</script>
+<% } %> <%- include('../partials/footer') %>
