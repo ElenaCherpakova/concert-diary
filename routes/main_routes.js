@@ -3,6 +3,6 @@ const router = express.Router();
 
 const { aboutPage } = require('../controllers/aboutController');
 
-router.get('/', aboutPage);
+router.route('/about').get(aboutPage);
 
 module.exports = router;

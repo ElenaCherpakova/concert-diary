@@ -19,6 +19,8 @@ const passport = require('passport');
 const connectDB = require('./db/connect');
 const passport_init = require('./passport/passport_init');
 const pageRouter = require('./routes/page_routes');
+const aboutRouter = require('./routes/about_routes');
+
 const concertRouter = require('./routes/concert_routes');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const notFoundMiddleware = require('./middleware/not-found');
@@ -106,6 +108,7 @@ app.use(csrf);
 app.use(setCurrentUser);
 // Routes
 app.use('/', pageRouter);
+app.use('/about', aboutRouter);
 app.use('/concerts', authMiddleware, concertRouter);
 
 app.use(notFoundMiddleware);
