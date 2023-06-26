@@ -20,7 +20,6 @@ const connectDB = require('./db/connect');
 const passport_init = require('./passport/passport_init');
 const pageRouter = require('./routes/page_routes');
 const concertRouter = require('./routes/concert_routes');
-// const aboutRouter = require('./routes/about_routes');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const notFoundMiddleware = require('./middleware/not-found');
 
@@ -84,7 +83,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        imgSrc: ["'self'", "data:"],
+        imgSrc: ["'self'", 'data:'],
         scriptSrc: [
           "'self'",
           'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
@@ -107,7 +106,6 @@ app.use(csrf);
 app.use(setCurrentUser);
 // Routes
 app.use('/', pageRouter);
-// app.use('/about', aboutRouter);
 app.use('/concerts', authMiddleware, concertRouter);
 
 app.use(notFoundMiddleware);

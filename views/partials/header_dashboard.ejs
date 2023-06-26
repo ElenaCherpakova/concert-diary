@@ -1,3 +1,4 @@
+<%- include("../partials/head", {errors, info}) %>
 <div class="container-fluid">
   <header
     class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
@@ -11,15 +12,15 @@
       class="nav col-12 col-md-auto flex-fill mb-2 justify-content-center mb-md-0"
       role="search"
       method="POST"
-      action="/dashboard/search">
+      action="/concerts/search">
+      <input type="hidden" name="_csrf" value="<%= _csrf %>" />
       <input
         type="search"
-        name="searchConcert"
+        name="searchArtist"
         class="form-control border-dark"
-        placeholder="Search..."
-        area-label="Search" />
+        placeholder="Search By Artist..."
+        aria-label="Search" />
     </form>
-
     <div class="col-md-3 text-end">
       <a href="/logoff" type="button" class="btn btn-outline-dark">Logout</a>
     </div>

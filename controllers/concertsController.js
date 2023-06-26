@@ -177,6 +177,7 @@ const deleteConcert = async (req, res, next) => {
   }
   res.redirect('/concerts');
 };
+
 module.exports = {
   concerts,
   newConcert,
