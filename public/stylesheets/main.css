@@ -1,9 +1,6 @@
 :root {
   --background-color: rgba(112, 134, 214, 0.532);
   --bs-primary-rgb: #12296c;
-  --bs-pagination-color: red;
-  --bs-pagination-active-bg: red;
-  --bs-pagination-active-border-color: red;
 }
 
 * {
