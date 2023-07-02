@@ -13,7 +13,7 @@
 }
 
 body {
-  font-family: 'Popping', sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: var(--background-color);
   color: var(--bs-primary-rgb);
   font-weight: 300;
@@ -24,11 +24,15 @@ h1,
 h2,
 h3,
 h4,
+h5,
 h6 {
-  font-family: 'Unbounded' cursive;
-  font-weight: 600;
+  font-family: 'Unbounded', cursive;
+  font-weight: 700;
 }
 
+h5 {
+  font-weight: 300;
+}
 .btn {
   border-radius: 2rem;
   cursor: pointer;
@@ -42,17 +46,13 @@ h6 {
 
 /* ABOUT */
 .about {
-  padding: 5rem 5rem;
+  padding: 5rem;
   margin: 1.5rem;
 }
 
-.about::first-letter {
-  font-size: 5rem;
-  color: #f4f2e2;
-}
-
+.about::first-letter,
 .about h4::first-letter {
-  font-size: 3rem;
+  font-size: 5rem;
   color: #f4f2e2;
 }
 
@@ -79,12 +79,15 @@ h6 {
     display: flex;
     flex-direction: column;
   }
+
   .header-container > header {
     margin-top: 1em;
     font-size: 1.5rem;
   }
-  .food-container {
-    margin-top: 2rem;
+
+  .index-hide-btn {
+    margin-top: 1rem;
+    display: none;
   }
 }
 
@@ -93,6 +96,15 @@ h6 {
   .food-container > footer {
     display: flex;
     flex-direction: column;
+  }
+
+  .index-container {
+    position: absolute;
+    top: 15%;
+  }
+
+  .index-hide-btn {
+    display: none;
   }
 }
 
@@ -103,6 +115,7 @@ h6 {
     flex-direction: row;
     margin-top: 2rem;
   }
+
   .food-container {
     margin-top: 2rem;
   }
@@ -115,7 +128,13 @@ h6 {
     flex-direction: row;
     margin: 0;
   }
+
   .food-container {
     margin-top: 0;
+  }
+  .index-hide-btn {
+    display: block;
+    width: 30%;
+    margin: 5px auto;
   }
 }
