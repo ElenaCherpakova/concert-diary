@@ -12,14 +12,24 @@ const concerts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
 
   try {
-    const totalConcerts = await Concert.countDocuments({
+    const search = req.query.search || '';
+    const searchBy = req.query.searchBy || 'artist';
+
+    const query = {
       createdBy: req.user.id,
-    });
+    };
+
+    if (searchBy === 'artist') {
+      query.artist = { $regex: search, $options: 'i' };
+    } else if (searchBy === 'rate') {
+      query.rate = { $regex: search, $options: 'i' };
+    }
+
+    const totalConcerts = await Concert.countDocuments(query);
 
     const totalPages = Math.ceil(totalConcerts / perPage);
-    const concertList = await Concert.find({
-      createdBy: req.user.id,
-    })
+
+    const concertList = await Concert.find(query)
       .sort({ _id: -1 })
       .skip((page - 1) * perPage)
       .limit(perPage);

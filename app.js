@@ -31,7 +31,7 @@ const { authMiddleware, setCurrentUser, csrf } = require('./middleware/auth');
 const port = process.env.PORT || 3000;
 
 // Template engine
-// app.set('view', 'views');
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -69,9 +69,24 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
+app.use(helmet({ crossOriginEmbedderPolicy: false }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-// app.use(ejsLayouts);
+app.use(express.static(path.join(__dirname, './public')));
+
+
+const scriptSrcUrls = [
+  'https://stackpath.bootstrapcdn.com/',
+  'https://cdn.jsdelivr.net/',
+];
+
+const styleSrcUrls = [
+  'https://stackpath.bootstrapcdn.com/',
+  'https://cdn.jsdelivr.net/',
+  'https://fonts.googleapis.com/',
+  'https://fonts.gstatic.com',
+  'https://use.fontawesome.com/',
+  'https://kit-free.fontawesome.com/',
+];
 
 // Apply security middleware
 app.use(
@@ -85,19 +100,12 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        imgSrc: ["'self'", 'data:'],
-        scriptSrc: [
-          "'self'",
-          'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
-          "'unsafe-inline'",
-        ],
+        imgSrc: ["'self'", 'blob:', 'data:'],
+        scriptSrc: ["'self'", "'unsafe-inline'", ...scriptSrcUrls],
         objectSrc: ["'none'"],
-        styleSrc: [
-          "'self'",
-          'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
-          "'unsafe-inline'",
-          'https://fonts.googleapis.com',
-        ],
+        fontSrc: ["'self'", ...styleSrcUrls],
+        styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+        childSrc: ['blob:'],
         upgradeInsecureRequests: null,
       },
     },

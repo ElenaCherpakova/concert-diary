@@ -1,4 +1,4 @@
-const aboutPage = async (req, res) => {
+const aboutPage = (req, res) => {
   const locals = {
     title: 'About Concert Diary',
     description: 'A diary of concerts',

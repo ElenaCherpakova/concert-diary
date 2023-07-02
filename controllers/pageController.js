@@ -30,13 +30,13 @@ const renderSignUp = (req, res) => {
 };
 
 const signUp = async (req, res, next) => {
-  let error_state = false;
+  let errorState = false;
   const userDoc = new User(req.body);
   const userValues = { name: req.body.name, email: req.body.email };
   try {
     await userDoc.validate();
   } catch (e) {
-    error_state = true;
+    errorState = true;
     if (e.name === 'ValidationError') {
       parse_v(e, req);
     } else {
@@ -44,10 +44,10 @@ const signUp = async (req, res, next) => {
     }
   }
   if (req.body.password !== req.body.password_confirm) {
-    error_state = true;
+    errorState = true;
     req.flash('error', 'The passwords entered do not match.');
   }
-  if (error_state === true) {
+  if (errorState === true) {
     return res.render('pages/sign-up-form', {
       userValues,
       errors: req.flash('error'),

@@ -1,54 +1,64 @@
-<%- include("../partials/head.ejs", {errors, info}) %>
-
-<div class="container justify-content-center">
-  <div class="w-50 container">
-    <div class="mt-10 mb-10"></div>
-    <div class="mb-3">
-      <form action="/sign-up" method="POST">
-        <div class="mb-3">
-          <label for="name" class="form-label">Name</label>
-          <input
-            name="name"
-            id="name"
-            type="text"
-            class="form-control"
-            value="<%= userValues.name %>" />
+<%- include("../partials/head", {errors, info}) %>
+<div class="container mt-5 justify-content-center align-items-center mb-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Register</h5>
+          <div class="mb-3">
+            <form action="/sign-up" method="POST" novalidate>
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input
+                  name="name"
+                  id="name"
+                  type="text"
+                  class="form-control"
+                  autofocus
+                  required
+                  value="<%= userValues.name %>" />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  name="email"
+                  id="email"
+                  type="text"
+                  required
+                  class="form-control"
+                  value="<%= userValues.email %>" />
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  name="password"
+                  id="password"
+                  type="password"
+                  required
+                  class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label for="password-confirm" class="form-label"
+                  >Confirm Password</label
+                >
+                <input
+                  name="password_confirm"
+                  id="password-confirm"
+                  type="password"
+                  required
+                  class="form-control" />
+              </div>
+              <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-dark">Register</button>
+                <div class="mt-2 text-center">Do you have an account?
+                  <a href="/logon">Login</a>
+                </div>
+                <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input
-            name="email"
-            id="email"
-            type="text"
-            class="form-control"
-            value="<%= userValues.email %>" />
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input
-            name="password"
-            id="password"
-            type="password"
-            class="form-control" />
-        </div>
-        <div class="mb-3">
-          <label for="password-confirm" class="form-label"
-            >Confirm Password</label
-          >
-          <input
-            name="password_confirm"
-            id="password-confirm"
-            type="password"
-            class="form-control" />
-        </div>
-        <div class="mb-3">
-          <a href="/" class="btn btn-outline-dark">Back</a>
-
-          <button type="submit" class="btn btn-dark">Sign Up</button>
-
-          <input type="hidden" name="_csrf" value="<%= _csrf %>" />
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

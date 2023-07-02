@@ -26,12 +26,6 @@ h6 {
   font-weight: 600;
 }
 
-.container-fluid-custom {
-  max-width: 1600px;
-}
-
-/* Button */
-
 .btn {
   border-radius: 2rem;
   cursor: pointer;
@@ -46,12 +40,13 @@ h6 {
 /* ABOUT */
 .about {
   padding: 5rem 0;
-  margin: 20px;
+  margin: 40px;
 }
 
-.home {
+.about::first-letter {
+  font-size: 5rem;
+  color: #f4f2e2;
 }
-
 .main-photo-container {
   position: absolute;
   width: 100%;

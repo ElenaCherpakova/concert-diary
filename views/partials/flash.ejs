@@ -1,0 +1,22 @@
+<% if (errors) { errors.forEach((err) => { %>
+<div
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  data-bs-delay="1000">
+  <%= err %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"></button>
+</div>
+<% }) } %> <% if (info) { info.forEach((msg) => { %>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <%= msg %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"></button>
+</div>
+<% }) } %>
