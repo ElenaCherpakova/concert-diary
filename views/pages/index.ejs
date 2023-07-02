@@ -17,22 +17,25 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&family=Unbounded:wght@300;700&display=swap"
       rel="stylesheet" />
   </head>
-  <body class="d-flex flex-column vh-100">
+  <body class="d-flex flex-column vh-90">
     <%- include('../partials/header') %>
 
-    <main class="container mt-5">
-      <div class="row text-center justify-content-center main-photo-container">
+    <main class="container-fluid">
+      <div class="row text-center justify-content-center">
         <div class="col-md-12 col-lg-6 mb-6 mb-md-0">
-          <h1 class="display-2 fw-bold">Concert Diary</h1>
+          <h1 class="display-2 fw-bold header">Concert Diary</h1>
           <p class="fw-normal">
             Digital Journal and Time Capsule to Record Your Live Music
           </p>
           <a class="btn btn-outline-dark btn-md" href="/sign-up">Sign Up</a>
           <a class="btn btn-dark btn-md" href="/logon">Login</a>
         </div>
+        <img
+          src="/images/photoThree.png"
+          class="main-photo img-fluid"
+          alt="Concert Photo" />
       </div>
     </main>
-    <img src="/images/photoThree.png" class="main-photo" alt="Concert Photo" />
 
     <%- include('../partials/footer') %>
     <script

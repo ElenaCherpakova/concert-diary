@@ -49,8 +49,12 @@
                   class="form-control" />
               </div>
               <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-dark">Register</button>
-                <div class="mt-2 text-center">Do you have an account?
+                <div>
+                  <a href="/" class="btn btn-outline-dark">Back</a>
+                  <button type="submit" class="btn btn-dark">Register</button>
+                </div>
+                <div class="mt-2 text-center">
+                  Do you have an account?
                   <a href="/logon">Login</a>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= _csrf %>" />
