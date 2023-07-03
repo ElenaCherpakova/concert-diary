@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 
 const errorHandlerMiddleware = (err, req, res, next) => {
-  if (err.name != "CastError") {
+  if (err.name !== "CastError") {
     console.log("An exception was thrown: ", err);
   }
   let customError = {
