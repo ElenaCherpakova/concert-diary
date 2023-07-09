@@ -8,7 +8,7 @@ Concert Diary is a full-stack web application built with Node.js, Express, Mongo
 - ➕ **Adding Concerts**: Users can add new concerts to their diary, providing details such as artist, venue, and date.
 - ✏️ **Editing Concerts**: Users can edit the details of existing concerts in their diary, such as updating the artist, venue, or date.
 - 🗑️ **Deleting Concerts**: Users can remove concerts from their diary when they are no longer relevant.
-- 🔍 **Search and Filter**: Users can search for specific concerts and apply filters based on artist, venue, or date.
+- 🔍 **Search and Filter**: Users can search for specific concerts and apply filters based on artist or rate.
 - 📄 **Pagination**: The application implements pagination for displaying concerts, allowing users to navigate through large sets of data easily.
 
 ## Tech Stack 🛠️
