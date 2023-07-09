@@ -1,6 +1,6 @@
 # Concert Diary 🎵
 
-Concert Diary is a full-stack web application built with Node.js, Express, MongoDB, and EJS. It allows users to efficiently track and manage their attended concerts, providing a seamless experience for concert enthusiasts.
+Concert Diary is a full-stack web application built with Node.js, Express, MongoDB, and EJS. It enables users to efficiently track, add, update, and delete their attended concerts, providing a seamless experience for concert enthusiasts. The application empowers users to maintain a personalized diary of their concert experiences, making it easy to manage and organize their concert records. With features such as user registration, authentication, search, filter, pagination, and secure server-side validation, Concert Diary ensures a robust and user-friendly platform for concert enthusiasts to keep track of their favorite events.
 
 ## Features ✨
 
