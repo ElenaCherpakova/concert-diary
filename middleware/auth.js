@@ -1,9 +1,10 @@
-const { randomUUID } = require("crypto");
+const { randomUUID } = require('crypto');
+const xss = require('xss');
 
 const authMiddleware = (req, res, next) => {
   if (!req.user) {
-    req.flash("error", "You can't access that page before logon.");
-    res.redirect("/");
+    req.flash('error', "You can't access that page before logon.");
+    res.redirect('/');
   } else {
     next();
   }
@@ -14,10 +15,28 @@ const setCurrentUser = (req, res, next) => {
   next();
 };
 
+function sanitize(obj) {
+  for (let key in obj) {
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      sanitize(obj[key]);
+    } else if (typeof obj[key] === 'string') {
+      obj[key] = xss(obj[key]);
+    }
+  }
+}
+
+const xssClean = (req, res, next) => {
+  // Sanitize request body data to prevent XSS attacks and other security vulnerabilities: https://
+  if (req.body) {
+    sanitize(req.body);
+  }
+  next();
+};
+
 class CsrfError extends Error {
   constructor(message) {
     super(message);
-    this.name = "CsrfError";
+    this.name = 'CsrfError';
   }
 }
 
@@ -30,24 +49,24 @@ const csrf = (req, res, next) => {
     _csrf = req.session._csrf;
   }
   res.locals._csrf = _csrf;
-  if (req.method === "POST") {
-    let content_type = req.get("content-type");
+  if (req.method === 'POST') {
+    let content_type = req.get('content-type');
     let protected_content = false;
     if (!content_type) {
       protected_content = true;
     } else {
       content_type = content_type.toLowerCase();
       if (
-        content_type === "application/x-www-form-urlencoded" ||
-        content_type === "text/plain" ||
-        content_type === "multipart/form-data"
+        content_type === 'application/x-www-form-urlencoded' ||
+        content_type === 'text/plain' ||
+        content_type === 'multipart/form-data'
       ) {
         protected_content = true;
       }
       if (protected_content) {
         if (!req.body || req.body._csrf != _csrf)
           throw new CsrfError(
-            "A POST request was received without a valid CSRF token."
+            'A POST request was received without a valid CSRF token.'
           );
       }
     }
@@ -58,11 +77,12 @@ const csrf = (req, res, next) => {
 const refreshCSRF = (req, res) => {
   req.session._csrf = randomUUID();
   res.locals._csrf = req.session._csrf;
-}
+};
 
 module.exports = {
   authMiddleware,
   setCurrentUser,
   csrf,
   refreshCSRF,
+  xssClean
 };

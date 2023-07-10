@@ -11,7 +11,8 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const rateLimiter = require('express-rate-limit'); //SECURITY
 const helmet = require('helmet'); //SECURITY
-const xss = require('xss-clean'); //SECURITY
+// const xss = require('xss');
+
 const MongoDBStore = require('connect-mongodb-session')(session);
 const passport = require('passport');
 
@@ -25,7 +26,12 @@ const concertRouter = require('./routes/concert_routes');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const notFoundMiddleware = require('./middleware/not-found');
 
-const { authMiddleware, setCurrentUser, csrf } = require('./middleware/auth');
+const {
+  authMiddleware,
+  setCurrentUser,
+  csrf,
+  xssClean,
+} = require('./middleware/auth');
 
 // Set the port
 const port = process.env.PORT || 3000;
@@ -73,7 +79,6 @@ app.use(helmet({ crossOriginEmbedderPolicy: false }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 const scriptSrcUrls = [
   'https://stackpath.bootstrapcdn.com/',
   'https://cdn.jsdelivr.net/',
@@ -111,7 +116,7 @@ app.use(
     },
   })
 );
-app.use(xss());
+app.use(xssClean);
 app.use(csrf);
 app.use(setCurrentUser);
 // Routes
