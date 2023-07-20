@@ -11,6 +11,7 @@ const authMiddleware = (req, res, next) => {
 };
 
 const setCurrentUser = (req, res, next) => {
+  // excellent
   res.locals.currentUser = req.user;
   next();
 };
@@ -26,7 +27,8 @@ function sanitize(obj) {
 }
 
 const xssClean = (req, res, next) => {
-  // Sanitize request body data to prevent XSS attacks and other security vulnerabilities: https://
+  // Sanitize request body data to prevent XSS attacks and other security vulnerabilities: https:// ... incomplete link?
+  // ^^ I would put these docs on the `sanitize` function instead
   if (req.body) {
     sanitize(req.body);
   }

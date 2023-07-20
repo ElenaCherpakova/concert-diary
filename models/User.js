@@ -13,6 +13,10 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Please provide an email'],
     unique: true,
+    // Aw, mailoji users are blocked - https://mailoji.com/
+    //
+    // Regex parsing for emails is fraught! Consider sending validation emails
+    // instead.
     match: [
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       ,
@@ -33,6 +37,10 @@ const UserSchema = new Schema({
 // Encrypt password before saving
 UserSchema.pre('save', async function () {
   const salt = await bcrypt.genSalt(10);
+  // `await has no effect on this expression`, my editor tells, me! Two things;
+  //
+  // 1. try to setup your editor to tell you these things! (I don't use VS Code, so I can't give any more specific help unfortunately)
+  // 2. do not await synchronous functions!
   this.password = await bcrypt.hash(this.password, salt);
 });
 

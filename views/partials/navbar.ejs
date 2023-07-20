@@ -16,6 +16,14 @@
           <a class="nav-link text-light" href="/concerts">Concerts</a>
         </li>
         <li class="nav-item">
+          <!-- I would probably style this to stand out more, since this is
+          the main action that you want new users to find. I.e, just putting
+          a white background like the logout button would probably be enough.
+
+          Also, it would be cool to implement a callout for new users that
+          points them towards this button, making the onboarding experience
+          even more seamless.
+          --!>
           <a class="nav-link text-light" href="/concerts/add">Add a Concert+</a>
         </li>
       </ul>
@@ -32,6 +40,25 @@
           />
           <select name="searchBy" style="width: 110px;" class="form-select border-dark">
             <option value="artist">By Artist</option>
+            <!-- this is more language than tech, but I'd think "rating" refers
+            to `Rate: amazing` / `Rate: mediocre`, etc.
+
+            Also, generally, we're going to use the word "rating" as a noun,
+            not "rate" to describe this categorization of good / great / mediocre.
+
+            Then, while the category they're in is the "rating", what we're
+            actually searching by when we select this "rate" option is not
+            actually the "rating category," but actually the "review body"
+
+            So, overall;
+
+            * prefer "rating" not "rate" -- I know that's confusing because
+              it seems like rating should be a verb and rate should be a noun
+              but hey I ain't make them rules
+            * ensure you consistently use the word, "rating," to refer to the
+              category ("good" / "mediocre" / "excellent"), and "review" to
+              refer to the text we've written about the concert
+            --!>
             <option value="rate">By Rate</option>
           </select>
           <button type="submit" class="btn btn-dark border-light">Search</button>

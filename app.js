@@ -79,6 +79,10 @@ app.use(helmet({ crossOriginEmbedderPolicy: false }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Are all of these URLs used? I don't see any other references to=
+// stackpath.bootstrapcdn.com elsewhere in the codebase, in particular,
+// though maybe you have some libraries that are brining that in; I'm not
+// sure.
 const scriptSrcUrls = [
   'https://stackpath.bootstrapcdn.com/',
   'https://cdn.jsdelivr.net/',

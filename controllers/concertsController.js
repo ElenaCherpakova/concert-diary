@@ -9,9 +9,15 @@ const concerts = async (req, res) => {
     title: 'List of Concerts',
     description: 'A diary of concerts',
   };
+  // Be verrrry careful -- I'm guessing `0` is not a valid page number, but
+  // `0` is falsy in JS, so any loosey goosey booleaning with integers strikes
+  // fear into my hear. Prefer the `??` (nullish coalescing) operator, which
+  // will treat zero with the respect it deserves!
   const page = parseInt(req.query.page) || 1;
 
   try {
+    // This, on the other hand, perfectly OK. It's only numbers that give the
+    // spooks
     const search = req.query.search || '';
     const searchBy = req.query.searchBy || 'artist';
 
@@ -19,6 +25,7 @@ const concerts = async (req, res) => {
       createdBy: req.user.id,
     };
 
+    // very nice
     if (searchBy === 'artist') {
       query.artist = { $regex: search, $options: 'i' };
     } else if (searchBy === 'rate') {
@@ -27,6 +34,7 @@ const concerts = async (req, res) => {
 
     const totalConcerts = await Concert.countDocuments(query);
 
+    // woah I've never seen that before, cool
     const totalPages = Math.ceil(totalConcerts / perPage);
 
     const concertList = await Concert.find(query)
@@ -80,6 +88,21 @@ const addConcert = async (req, res, next) => {
       createdBy: req.user.id,
     });
   } catch (e) {
+    // is this `e.name = 'ValidationError' coming from mongoose? I think so --
+    // but in general, in more modern JS we prefer to use ES5 class syntax &
+    // regular subclassing + the instance of operator. I.e;
+    //
+    // class MyError extends Error {}
+    //
+    // try {
+    //   throw new MyError("ouch")
+    // } catch (e) {
+    //   if (e instanceof MyError) {
+    //     console.error('no need to crash, we thought this might happen!', e);
+    //   } else {
+    //     // something else unexpected happened!!
+    //     throw e;
+    //   }
     if (e.name === 'ValidationError') {
       parse_v(e, req);
       const concertValues = {
@@ -152,6 +175,10 @@ const updateConcert = async (req, res, next) => {
       const concertValues = {};
       concertValues.title = req.body.title;
       concertValues.artist = req.body.artist;
+      // I noticed on the list page, the newlines are removed from the reviews
+      // so that they look nice on the cards. Where does that behavior come
+      // from? That's a really minute detail and maybe bootstrap gets some
+      // credit there, but I do appreciate it either way.
       concertValues.review = req.body.review;
       concertValues.rate = req.body.rate;
       concertValues.action = `/concerts/update/${req.params.concert}`;

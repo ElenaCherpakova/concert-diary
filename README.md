@@ -1,3 +1,15 @@
+# High-Level
+
+First of all, my clumsy chaos through trying to make an account may have tested
+every single edge-case in your registration process and turns out the only bug
+I found was in my own lack of directions-following, so awesome job.
+
+I don't know where this is, but the fact that the add concert button is hidden
+in the hamburger menu on the mobile view is probably not ideal. Again, get that
+primary action front and center, making it easy to find.
+
+Also, this readme is very well put-together!
+
 # Concert Diary 🎵
 
 Concert Diary is a full-stack web application built with Node.js, Express, MongoDB, and EJS. It enables users to efficiently track, add, update, and delete their attended concerts, providing a seamless experience for concert enthusiasts. The application empowers users to maintain a personalized diary of their concert experiences, making it easy to manage and organize their concert records. With features such as user registration, authentication, search, filter, pagination, and secure server-side validation, Concert Diary ensures a robust and user-friendly platform for concert enthusiasts to keep track of their favorite events.
